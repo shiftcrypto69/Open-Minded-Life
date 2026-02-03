@@ -1,0 +1,20 @@
+# Secret Keys & Environment Variables
+.env
+auth.json
+secrets.py
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+db.sqlite3
+media/
+static_cdn/
+
+# Apps Script / Tooling
+.clasp.json
+node_modules/
+
+# OS Files
+.DS_Store
+Thumbs.db
