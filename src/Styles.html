@@ -1,1 +1,109 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
+  :root {
+    --bg-color: #ffffff;
+    --text-main: #000000;
+    --text-muted: #616161;
+    --border-color: #dbdbdb;
+    --accent-color: #0095f6;
+    --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .navbar-brand {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  /* Thread Card Style */
+  .thread-card {
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px 0;
+    transition: background 0.2s;
+  }
+
+  .thread-card:hover {
+    background-color: #fafafa;
+  }
+
+  .profile-pic {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #efefef;
+    display: inline-block;
+    margin-right: 12px;
+  }
+
+  .username {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .timestamp {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-left: 8px;
+  }
+
+  .post-content {
+    font-size: 0.95rem;
+    margin-top: 4px;
+    padding-left: 54px; /* Align with text, not icon */
+  }
+
+  /* Input Section */
+  .composer-box {
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 15px;
+    margin-bottom: 30px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .form-control {
+    border: none;
+    padding: 10px 0;
+    font-size: 1rem;
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+    border-bottom: 1px solid var(--accent-color);
+  }
+
+  .btn-post {
+    background-color: var(--text-main);
+    color: white;
+    border-radius: 20px;
+    padding: 6px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    float: right;
+  }
+
+  .btn-post:hover {
+    background-color: #333;
+    color: #fff;
+  }
+
+  /* Responsive adjustment */
+  @media (max-width: 576px) {
+    .container {
+      padding: 10px;
+    }
+    .post-content {
+      padding-left: 0;
+      margin-top: 10px;
+    }
+  }
+</style>
