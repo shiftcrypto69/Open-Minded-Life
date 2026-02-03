@@ -1,4 +1,5 @@
 <style>
+  /* Import font yang bersih dan moden */
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
   :root {
@@ -6,16 +7,24 @@
     --text-main: #000000;
     --text-muted: #616161;
     --border-color: #dbdbdb;
-    --accent-color: #0095f6;
-    --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    --highlight: #0095f6;
   }
 
   body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-main);
-    line-height: 1.6;
+    /* Elakkan kandungan terpotong oleh "notch" telefon */
+    padding-bottom: env(safe-area-inset-bottom);
+    margin: 0;
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* Navbar Gaya Minimalis */
+  .navbar {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .navbar-brand {
@@ -23,87 +32,104 @@
     letter-spacing: -0.5px;
   }
 
-  /* Thread Card Style */
+  /* Kotak Menulis (Composer) */
+  .composer-box {
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 16px;
+    background: #fff;
+    transition: border-color 0.2s;
+  }
+
+  .composer-box:focus-within {
+    border-color: #000;
+  }
+
+  /* Kad Mesej (Thread Card) */
   .thread-card {
-    border: none;
-    border-bottom: 1px solid var(--border-color);
     padding: 16px 0;
-    transition: background 0.2s;
+    border-bottom: 1px solid #f0f0f0;
+    /* Animasi muncul yang lembut */
+    animation: fadeIn 0.4s ease-out forwards;
   }
 
-  .thread-card:hover {
-    background-color: #fafafa;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
+  /* Gambar Profil Bulat */
   .profile-pic {
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: #efefef;
-    display: inline-block;
+    background: #f0f2f5;
     margin-right: 12px;
+    flex-shrink: 0;
+    background-image: url('https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y');
+    background-size: cover;
+    border: 1px solid #eee;
   }
 
-  .username {
-    font-weight: 600;
-    font-size: 0.95rem;
+  /* Tipografi Mesej */
+  .username { 
+    font-weight: 600; 
+    font-size: 0.95rem; 
+    color: #000;
   }
 
-  .timestamp {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    margin-left: 8px;
+  .timestamp { 
+    color: var(--text-muted); 
+    font-size: 0.75rem; 
+    margin-left: 8px; 
   }
 
-  .post-content {
-    font-size: 0.95rem;
-    margin-top: 4px;
-    padding-left: 54px; /* Align with text, not icon */
+  .post-content { 
+    font-size: 0.95rem; 
+    margin-top: 4px; 
+    white-space: pre-wrap; 
+    line-height: 1.5;
+    color: #1a1a1a;
   }
 
-  /* Input Section */
-  .composer-box {
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 15px;
-    margin-bottom: 30px;
-    box-shadow: var(--card-shadow);
-  }
-
-  .form-control {
-    border: none;
-    padding: 10px 0;
-    font-size: 1rem;
-  }
-
-  .form-control:focus {
-    box-shadow: none;
-    border-bottom: 1px solid var(--accent-color);
-  }
-
+  /* Butang Post */
   .btn-post {
-    background-color: var(--text-main);
-    color: white;
+    background-color: #000;
+    color: #fff;
     border-radius: 20px;
     padding: 6px 20px;
     font-weight: 600;
     font-size: 0.9rem;
-    float: right;
+    border: none;
+    transition: opacity 0.2s;
   }
 
-  .btn-post:hover {
-    background-color: #333;
-    color: #fff;
+  .btn-post:active {
+    opacity: 0.7;
   }
 
-  /* Responsive adjustment */
-  @media (max-width: 576px) {
-    .container {
-      padding: 10px;
+  .btn-post:disabled {
+    background-color: #ccc;
+  }
+
+  /* Responsive untuk Skrin Telefon */
+  @media (max-width: 480px) {
+    .container { 
+      padding-left: 15px; 
+      padding-right: 15px; 
     }
-    .post-content {
-      padding-left: 0;
-      margin-top: 10px;
+    
+    .composer-box { 
+      border-radius: 0; 
+      border-left: none; 
+      border-right: none;
+      margin-left: -15px;
+      margin-right: -15px;
+      border-top: none;
+    }
+
+    .username, .post-content { 
+      font-size: 0.9rem; 
     }
   }
 </style>
