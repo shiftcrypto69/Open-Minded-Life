@@ -1,7 +1,7 @@
 # 🌐 Open Minded Life
 
 <p align="center">
-  <img src="static/images/logo.png" width="120px" alt="Open Minded Life Logo">
+  <img src="images/logo.png" width="150px" alt="Open Minded Life Logo">
   <br>
   <b>A digital sanctuary for authentic, judgment-free, and open-minded connections.</b>
 </p>
