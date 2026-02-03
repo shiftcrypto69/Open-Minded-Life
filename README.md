@@ -89,7 +89,6 @@ README.md: The face of your project. It explains the "Open Minded Life" philosop
 
 ## 📂 Repository Structure
 
-```text
 Open-Minded-Life/
 ├── src/
 │   ├── Code.gs         # Backend logic (Google Apps Script)
