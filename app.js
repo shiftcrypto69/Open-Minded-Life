@@ -1,83 +1,86 @@
-// Gantikan dengan maklumat dari Settings > API Supabase anda
-const SUPABASE_URL = 'https://xyz.supabase.co'; 
-const SUPABASE_KEY = 'eyJh......'; // Kod yang sangat panjang (anon public)
+// 1. Tetapan API Supabase
+const SUPABASE_URL = 'https://xyz.supabase.co'; // Gantikan dengan URL anda
+const SUPABASE_KEY = 'eyJh......'; // Gantikan dengan Anon Key anda
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Simpan sesi user dalam LocalStorage (supaya tak perlu login setiap kali refresh)
+// 2. Ambil data user dari simpanan pelayar
 let currentUser = localStorage.getItem('oml_user');
 
-// Semak status login bila page buka
+// 3. Jalankan fungsi bila laman web siap dibuka
 document.addEventListener('DOMContentLoaded', () => {
+  const authOverlay = document.getElementById('auth-overlay');
+  
   if (currentUser) {
-    document.getElementById('auth-overlay').style.setProperty('display', 'none', 'important');
+    // Jika sudah login, sorok overlay (guna semakan jika elemen wujud)
+    if(authOverlay) authOverlay.style.setProperty('display', 'none', 'important');
     loadPosts();
-    // Bonus: Auto-refresh setiap 10 saat
+    // Auto-refresh setiap 10 saat
     setInterval(loadPosts, 10000);
   } else {
-    document.getElementById('auth-overlay').style.display = 'flex';
+    // Jika belum login, pastikan overlay muncul (jika anda buat sistem login)
+    if(authOverlay) authOverlay.style.display = 'flex';
   }
 });
 
-// Fungsi Login (Tampal Alamat)
-function login() {
-  const addr = document.getElementById('wallet-input').value.trim();
-  if (addr.length < 8) {
-    alert("Sila masukkan alamat dompet yang sah.");
+// 4. Fungsi Hantar Post (Telah diselaraskan dengan ID index.html)
+async function handlePostSubmit() {
+  // Ambil input dari ID yang betul: 'username' dan 'content'
+  const usernameInput = document.getElementById('username'); 
+  const contentInput = document.getElementById('content');
+  const btn = document.getElementById('postBtn');
+
+  const user = usernameInput.value.trim() || currentUser || "Anon";
+  const content = contentInput.value.trim();
+
+  if (!content) {
+    alert("Tulis sesuatu dulu!");
     return;
   }
-  
-  // Format nama: 0x1234...abcd
-  const shortName = addr.substring(0, 6) + "..." + addr.slice(-4);
-  localStorage.setItem('oml_user', shortName);
-  location.reload();
-}
 
-function logout() {
-  localStorage.removeItem('oml_user');
-  location.reload();
-}
-
-// Hantar Post
-async function handlePostSubmit() {
-  const content = document.getElementById('post-content').value.trim();
-  const btn = document.getElementById('btn-post');
-
-  if (!content) return;
-
+  // Tukar rupa butang masa tengah loading
   btn.disabled = true;
-  btn.innerText = "...";
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
 
   const { error } = await _supabase
     .from('posts')
-    .insert([{ username: currentUser, content: content }]);
+    .insert([{ username: user, content: content }]);
 
   if (error) {
     console.error(error);
     alert("Gagal hantar post: " + error.message);
   } else {
-    document.getElementById('post-content').value = '';
+    // Kosongkan kotak teks lepas berjaya
+    contentInput.value = '';
     loadPosts();
   }
+  
   btn.disabled = false;
   btn.innerText = "Post";
 }
 
-// Ambil Post (Real-time Feel)
+// 5. Ambil Post dari Supabase
 async function loadPosts() {
   const { data, error } = await _supabase
     .from('posts')
     .select('*')
     .order('created_at', { ascending: false });
 
+  const feed = document.getElementById('feed');
+  if (!feed) return;
+
+  if (error) {
+    console.error("Ralat ambil data:", error);
+    return;
+  }
+
   if (data) {
-    const feed = document.getElementById('feed');
     feed.innerHTML = data.map(post => `
-      <div class="card mb-3 border-0 shadow-sm p-3 rounded-4 animate-fade-in">
+      <div class="card mb-3 border-0 shadow-sm p-3 rounded-4" style="border-radius: 15px;">
         <div class="d-flex justify-content-between align-items-center">
           <span class="fw-bold text-primary small">@${post.username}</span>
-          <span class="text-muted" style="font-size: 0.6rem;">${new Date(post.created_at).toLocaleTimeString()}</span>
+          <span class="text-muted" style="font-size: 0.7rem;">${new Date(post.created_at).toLocaleString('ms-MY')}</span>
         </div>
-        <div class="mt-2 text-dark" style="white-space: pre-wrap;">${post.content}</div>
+        <div class="mt-2 text-dark" style="white-space: pre-wrap; font-size: 0.95rem;">${post.content}</div>
       </div>
     `).join('');
   }
