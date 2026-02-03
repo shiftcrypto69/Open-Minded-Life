@@ -9,7 +9,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Active--Development-orange" alt="Status">
   <img src="https://img.shields.io/badge/License-MIT-blue" alt="License">
-  <img src="https://img.shields.io/badge/UI-Threads--Minimalist-black" alt="UI Style">
+  <img src="https://img.shields.io/badge/Platform-Google%20Apps%20Script-green" alt="Platform">
 </p>
 
 ---
@@ -24,20 +24,20 @@
 ## 🚀 Experience The Features
 
 * **🧶 Thread-Style Conversations:** A clean, vertical feed focused on thoughts and ideas rather than distractions.
-* **🛡️ Safe Haven:** Built-in community values to ensure every voice is heard in a respectful environment.
+* **🛡️ Serverless Infrastructure:** Hosted entirely on Google Cloud (Apps Script), ensuring 99.9% uptime with zero hosting costs.
 * **⚡ Lightweight & Fast:** Optimized for mobile browsing, ensuring your community is always just a tap away.
-* **🔒 Privacy-Focused:** We respect your anonymity and your journey. Your data belongs to your story.
+* **🔒 Privacy-Focused:** Powered by Google's secure ecosystem. Your data belongs to your story.
 
 ---
 
-## 🛠️ The Tech Stack (Core Foundations)
+## 🛠️ The Tech Stack (Serverless Architecture)
 
-This project leverages a sophisticated blend of modern web technologies to ensure stability and scalability:
+This project leverages a clever integration of Google’s workspace tools to create a robust social experience:
 
-* **Backend:** [Django](https://www.djangoproject.com/) — The web framework for perfectionists with deadlines.
-* **Data Core:** [Google Sheets](https://www.google.com/sheets/about/) (via Apps Script) — For transparent and accessible community data management.
-* **Frontend:** [Bootstrap 5](https://getbootstrap.com/) & Vanilla JS — Delivering a smooth, responsive, "Threads-inspired" interface.
-* **AI Readiness:** Fully compatible with **Google Gemini 1.5 Flash** for future-proof smart moderation.
+* **Engine:** [Google Apps Script](https://developers.google.com/apps-script) — The backend logic handling requests and data flow.
+* **Database:** [Google Sheets](https://www.google.com/sheets/about/) — A transparent and real-time database for community posts.
+* **Frontend:** [Bootstrap 5](https://getbootstrap.com/) & Vanilla JS — A smooth, responsive, "Threads-inspired" interface.
+* **AI Readiness:** Native integration support for **Google Gemini 1.5 Flash** for smart moderation and content insights.
 
 ---
 
@@ -45,37 +45,37 @@ This project leverages a sophisticated blend of modern web technologies to ensur
 
 ```text
 Open-Minded-Life/
-├── core/               # Django project settings
-├── account/            # User authentication & profile management
-├── forum/              # The heart of the discussions
-├── static/             # Aesthetics (CSS, minimalist icons)
-├── templates/          # HTML views (The 'Threads' interface)
-├── .gitignore          # Keeping your secrets safe
-├── LICENSE             # Open-source MIT freedom
+├── src/
+│   ├── Code.gs         # Backend logic (Google Apps Script)
+│   ├── Index.html      # Main UI & Frontend Logic
+│   └── CSS.html        # Custom minimalist styling
+├── images/             # Logos and screenshots
+├── .gitignore          # Keeping Script IDs safe
+├── LICENSE             # MIT License (shiftcrypto69)
 └── README.md           # The blueprint you are reading
 
 ---
 
-⚙️ Installation & Setup
+⚙️ Installation & Setup (Quick Start)
+Since this is a Google Apps Script project, follow these steps to deploy:
 
-1. Clone the Dream:
-Bash
-git clone [https://github.com/YourUsername/Open-Minded-Life.git](https://github.com/YourUsername/Open-Minded-Life.git)
-cd Open-Minded-Life
+1. Create a Google Sheet:
+- Create a new sheet named Open Minded Life DB.
+- Rename the first tab to Posts and add headers: Timestamp, Username, Content.
 
-2. Prepare the Environment:
+2. Open Apps Script:
+- In your Sheet, go to Extensions > Apps Script.
 
-Bash
-pip install -r requirements.txt
+3. Copy the Code:
+- Copy the contents of src/Code.gs and src/Index.html from this repo into the Apps Script editor.
 
-3. Initialize the Core:
+4. Deploy as Web App:
+- Click Deploy > New Deployment.
+- Select Web App.
+- Set "Execute as" to Me and "Who has access" to Anyone.
 
-Bash
-python manage.py migrate
-python manage.py runserver
-
-4. Connect the Sheets:
-Link your Google Apps Script URL in settings.py or your .env file to begin syncing community posts.
+5. Get your URL:
+- Copy the provided Web App URL and share it with your community!
 
 ---
 
@@ -91,7 +91,7 @@ Be Open: Help us build a space that excludes no one.
 ---
 
 📬 Stay Connected
-Project Lead: [Your Name/GitHub Handle]
+Project Lead: shiftcrypto69
 
 Vision: To redefine social interaction for the free-spirited.
 
@@ -100,5 +100,3 @@ Vision: To redefine social interaction for the free-spirited.
 <p align="center"> <i>"Living an open-minded life isn't just a choice; it's a journey."</i>
 
 <b>© 2026 Open Minded Life</b> </p>
-
-
