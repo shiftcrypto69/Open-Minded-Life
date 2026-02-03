@@ -1,16 +1,8 @@
 <!DOCTYPE html>
 <html lang="ms">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#ffffff">
-    
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/shiftcrypto69/Open-Minded-Life/main/images/logo.jpg">
-
-    <link rel="manifest" href='data:application/json,{"name":"Open Minded Life","short_name":"OMLife","start_url":"index.html","display":"standalone","background_color":"#ffffff","theme_color":"#000000","icons":[{"src":"https://raw.githubusercontent.com/shiftcrypto69/Open-Minded-Life/main/images/logo.jpg","sizes":"512x512","type":"image/jpeg"}]}'>
-
     <title>Open Minded Life</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,52 +10,52 @@
     <link rel="stylesheet" href="style.css">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  </head>
-  <body class="bg-light">
+</head>
+<body class="bg-light">
     
     <nav class="navbar sticky-top bg-white border-bottom shadow-sm">
-      <div class="container d-flex justify-content-between align-items-center">
-        <span class="navbar-brand mb-0 h1 fw-bold text-primary">🌐 OMLife</span>
-        <button class="btn btn-sm btn-outline-danger border-0" onclick="logout()" title="Keluar">
-          <i class="bi bi-box-arrow-right"></i>
-        </button>
-      </div>
+        <div class="container d-flex justify-content-between align-items-center" style="max-width: 600px;">
+            <span class="navbar-brand mb-0 h1 fw-bold text-primary">🌐 OMLife</span>
+            <button class="btn btn-sm btn-outline-danger border-0" onclick="logout()">
+                <i class="bi bi-box-arrow-right"></i>
+            </button>
+        </div>
     </nav>
 
     <div class="container mt-4 mb-5" style="max-width: 600px;">
-      
-      <div class="composer-box mb-4 p-3 bg-white border rounded-4 shadow-sm">
-        <div class="d-flex">
-          <div class="profile-pic me-3">
-             <i class="bi bi-person-circle text-secondary" style="font-size: 40px;"></i>
-          </div>
-          <div class="flex-grow-1">
-            <input type="text" id="username" class="form-control fw-bold border-0 p-0 mb-1" placeholder="Nama anda..." style="font-size: 0.95rem; box-shadow: none;">
-            <textarea id="content" class="form-control border-0 p-0" placeholder="Apa yang anda fikirkan?" rows="2" style="resize: none; box-shadow: none; font-size: 1.1rem;"></textarea>
-          </div>
+        
+        <div class="composer-box mb-4 p-3 bg-white border rounded-4 shadow-sm">
+            <div class="d-flex">
+                <div class="profile-pic me-3">
+                    <i class="bi bi-person-circle text-secondary" style="font-size: 40px;"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <input type="text" id="username" class="form-control fw-bold border-0 p-0 mb-1" placeholder="Nama anda..." style="box-shadow: none;">
+                    <textarea id="content" class="form-control border-0 p-0" placeholder="Apa yang anda fikirkan?" rows="2" style="resize: none; box-shadow: none; font-size: 1.1rem;"></textarea>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-2 pt-2 border-top">
+                <button id="postBtn" class="btn btn-primary rounded-pill px-4 fw-bold" onclick="handlePostSubmit()">
+                    Post
+                </button>
+            </div>
         </div>
-        <div class="d-flex justify-content-end mt-2 pt-2 border-top">
-          <button id="postBtn" class="btn btn-primary rounded-pill px-4 fw-bold" onclick="handlePostSubmit()">
-            Post
-          </button>
-        </div>
-      </div>
 
-      <div class="d-flex align-items-center mb-3">
-        <hr class="flex-grow-1 opacity-25">
-        <span class="mx-3 text-muted small fw-bold">DINDING FIKIRAN</span>
-        <hr class="flex-grow-1 opacity-25">
-      </div>
-
-      <div id="feed">
-        <div class="text-center py-5">
-          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-          <p class="mt-2 text-muted small">Menyusun dinding fikiran...</p>
+        <div class="d-flex align-items-center mb-3">
+            <hr class="flex-grow-1 opacity-25">
+            <span class="mx-3 text-muted small fw-bold">DINDING FIKIRAN</span>
+            <hr class="flex-grow-1 opacity-25">
         </div>
-      </div>
+
+        <div id="feed">
+            <div class="text-center py-5">
+                <div class="spinner-border spinner-border-sm text-primary"></div>
+                <p class="mt-2 text-muted small">Memuatkan dinding...</p>
+            </div>
+        </div>
 
     </div>
 
     <script src="app.js"></script>
-  </body>
+</body>
 </html>
