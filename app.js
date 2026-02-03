@@ -1,24 +1,27 @@
-// 1. KONFIGURASI SUPABASE
-const SUPABASE_URL = 'https://trhbfitkysiusemtwmsh.supabase.co'; 
+// ==========================================
+// 1. KONFIGURASI SUPABASE (URL & KEY ANDA)
+// ==========================================
+const SUPABASE_URL = 'https://trhbfitkysiusmtwmsh.supabase.co'; 
 const SUPABASE_KEY = 'sb_publishable_-GyGSI-iWUgLCtAGXtidvg_FpDUrNn0'; 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 2. PEMUATAN DATA AWAL
+// 2. AMBIL DATA USER DARI STORAGE
 let currentUser = localStorage.getItem('oml_user');
 
 document.addEventListener('DOMContentLoaded', () => {
     const usernameInput = document.getElementById('username');
     
-    // Set nama jika sudah ada dalam simpanan
+    // Set nama jika sudah ada dalam simpanan browser
     if (currentUser && usernameInput) {
         usernameInput.value = currentUser;
     }
 
-    // Panggil fungsi muat post
+    // Muat post sedia ada sebaik sahaja web dibuka
     loadPosts();
 
-    // --- AKTIFKAN REALTIME LISTENER ---
-    // Pastikan anda sudah klik "Enable Realtime" pada table 'posts' di Supabase Dashboard
+    // ==========================================
+    // 3. AKTIFKAN REALTIME (POST MUNCUL TERUS)
+    // ==========================================
     _supabase
         .channel('public:posts')
         .on('postgres_changes', { 
@@ -26,13 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
             schema: 'public', 
             table: 'posts' 
         }, (payload) => {
-            console.log('Ada post baru masuk!', payload);
-            loadPosts(); // Auto-refresh feed bila ada data baru
+            console.log('Post baru dikesan!', payload);
+            loadPosts(); // Refresh senarai post secara automatik
         })
         .subscribe();
 });
 
-// 3. FUNGSI HANTAR POST
+// ==========================================
+// 4. FUNGSI HANTAR POST (HANDLE SUBMIT)
+// ==========================================
 async function handlePostSubmit() {
     const usernameInput = document.getElementById('username'); 
     const contentInput = document.getElementById('content');
@@ -41,30 +46,32 @@ async function handlePostSubmit() {
     const user = usernameInput.value.trim() || "Anon";
     const content = contentInput.value.trim();
 
+    // Jangan hantar kalau kosong
     if (!content) {
-        alert("Sila tulis sesuatu...");
+        alert("Sila tulis sesuatu sebelum hantar!");
         return;
     }
 
-    // Simpan nama untuk masa depan
+    // Simpan nama user supaya tak payah taip lagi
     localStorage.setItem('oml_user', user);
     currentUser = user;
 
-    // Loading status pada butang
+    // Tukar butang jadi loading
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
 
-    // Masukkan data ke Supabase
+    // MASUKKAN DATA KE SUPABASE
     const { error } = await _supabase
         .from('posts')
         .insert([{ username: user, content: content }]);
 
     if (error) {
-        console.error(error);
-        alert("Gagal hantar: " + error.message);
+        console.error("DEBUG ERROR:", error);
+        alert("GAGAL HANTAR: " + error.message);
     } else {
-        // Kosongkan kotak teks (Nama dikekalkan)
+        // Jika berjaya, kosongkan kotak content
         contentInput.value = '';
+        // Kita tak perlu panggil loadPosts() sebab Realtime dah cover
     }
     
     // Kembalikan butang ke asal
@@ -72,32 +79,35 @@ async function handlePostSubmit() {
     btn.innerText = "Post";
 }
 
-// 4. FUNGSI AMBIL POST (FEED)
+// ==========================================
+// 5. FUNGSI AMBIL POST (LOAD FEED)
+// ==========================================
 async function loadPosts() {
     const { data, error } = await _supabase
         .from('posts')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(30); // Ambil 30 post terbaru sahaja
+        .limit(30);
 
     const feed = document.getElementById('feed');
     if (!feed) return;
 
     if (error) {
         console.error("Ralat database:", error);
+        feed.innerHTML = `<div class="alert alert-danger">Ralat: ${error.message}</div>`;
         return;
     }
 
     if (data) {
         if (data.length === 0) {
-            feed.innerHTML = '<div class="text-center text-muted py-5">Dinding ini masih kosong. Mulakan bicara...</div>';
+            feed.innerHTML = '<div class="text-center text-muted py-5">Belum ada post. Jom jadi yang pertama!</div>';
             return;
         }
 
         feed.innerHTML = data.map(post => `
-            <div class="card mb-3 border-0 shadow-sm p-3 bg-white" style="border-radius: 18px; transition: 0.3s;">
+            <div class="card mb-3 border-0 shadow-sm p-3 bg-white" style="border-radius: 18px;">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="fw-bold text-primary small" style="letter-spacing: 0.5px;">@${post.username}</span>
+                    <span class="fw-bold text-primary small">@${post.username}</span>
                     <span class="text-muted" style="font-size: 0.7rem;">
                         ${new Date(post.created_at).toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' })}
                     </span>
@@ -108,7 +118,9 @@ async function loadPosts() {
     }
 }
 
-// 5. FUNGSI LOGOUT
+// ==========================================
+// 6. FUNGSI LOGOUT (RESET USER)
+// ==========================================
 function logout() {
     localStorage.removeItem('oml_user');
     location.reload();
