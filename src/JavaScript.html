@@ -1,1 +1,56 @@
+<script>
+  // Load posts automatically when page opens
+  window.onload = loadPosts;
 
+  function loadPosts() {
+    google.script.run
+      .withSuccessHandler(renderPosts)
+      .getPosts();
+  }
+
+  function renderPosts(posts) {
+    const container = document.getElementById('feed-container');
+    
+    if (posts.length === 0) {
+      container.innerHTML = '<p class="text-center text-muted">No stories yet. Be the first to share.</p>';
+      return;
+    }
+
+    container.innerHTML = posts.map(post => `
+      <div class="thread-card">
+        <div class="d-flex">
+          <div class="profile-pic"></div>
+          <div class="flex-grow-1">
+            <span class="username">${post[1]}</span>
+            <span class="timestamp">${new Date(post[0]).toLocaleDateString()}</span>
+            <div class="post-content">${post[2]}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function handlePostSubmit() {
+    const user = document.getElementById('username').value;
+    const text = document.getElementById('content').value;
+
+    if (!user || !text) {
+      alert("Please fill in your name and thoughts.");
+      return;
+    }
+
+    // Disable button to prevent double post
+    const btn = document.querySelector('.btn-post');
+    btn.disabled = true;
+    btn.innerText = "Posting...";
+
+    google.script.run
+      .withSuccessHandler(() => {
+        document.getElementById('content').value = "";
+        btn.disabled = false;
+        btn.innerText = "Post";
+        loadPosts(); // Refresh feed
+      })
+      .submitPost(user, text);
+  }
+</script>
