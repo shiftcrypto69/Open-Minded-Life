@@ -41,6 +41,52 @@ This project leverages a clever integration of Google’s workspace tools to cre
 
 ---
 
+📂 Repository Structure & File List (Full List)
+
+```text
+Open-Minded-Life/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml          # (Optional) For automation if using Clasp
+├── src/                        # Core application source code
+│   ├── Code.gs                 # Backend (Google Apps Script Logic)
+│   ├── Index.html              # Main Structure (HTML)
+│   ├── Styles.html             # Visual Design (CSS - Minimalist/Threads-style)
+│   └── JavaScript.html         # Frontend Logic (Client-side JS)
+├── images/                     # Visual assets folder
+│   ├── logo.png                # Open Minded Life Logo
+│   └── screenshot-preview.png  # App preview image for README
+├── docs/                       # Supplemental documentation
+│   └── setup-guide.md          # Guide for Google Sheets configuration
+├── .gitignore                  # Prevents sensitive files from being tracked
+├── LICENSE                     # MIT License (Copyright shiftcrypto69)
+└── README.md                   # Repository landing page
+
+---
+
+📝 File Descriptions & Functions
+
+1. Folder: src/ (The Application Heart)
+Code.gs: This contains the server-side logic, including the doGet() function to serve the web app, the submitPost() function to write to the database, and the Gemini API integration. This engine runs on Google’s servers.
+
+Index.html: The primary entry point for the UI. It integrates the Bootstrap framework and organizes the layout for the feed and the posting forms.
+
+Styles.html: CSS is isolated here to keep the code clean. It contains the styling required to achieve a Threads-inspired aesthetic (e.g., rounded fonts, soft shadows, and minimalist whitespace).
+
+JavaScript.html: Contains the logic to handle data transmission without refreshing the page (using google.script.run) to ensure a smooth, modern user experience.
+
+2. Folder: images/
+Crucial for the README.md. Visuals provide potential users and contributors with an immediate understanding of the app’s interface. It is recommended to keep at least one high-quality screenshot here.
+
+3. Root Files
+.gitignore: Essential for security. It ensures that sensitive files like .clasp.json or local environment variables are not accidentally pushed to the public repository, protecting your Google account credentials.
+
+LICENSE: The legal framework for your project, using the MIT License (Copyright shiftcrypto69), which allows for open-source collaboration.
+
+README.md: The face of your project. It explains the "Open Minded Life" philosophy, the tech stack, and how to get the project up and running
+
+---
+
 ## 📂 Repository Structure
 
 ```text
