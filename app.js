@@ -1,25 +1,20 @@
-// 1. TETAPAN SUPABASE (URL Khas: Tanpa huruf 'e' pada kysius)
 const SUPABASE_URL = 'https://trhbfitkysiusmtwmsh.supabase.co'; 
 const SUPABASE_KEY = 'sb_publishable_-GyGSI-iWUgLCtAGXtidvg_FpDUrNn0'; 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Ambil nama lama kalau ada
     const savedUser = localStorage.getItem('oml_user');
     if (savedUser) document.getElementById('username').value = savedUser;
 
     loadPosts();
 
-    // AKTIFKAN REALTIME
-    _supabase
-        .channel('any')
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, () => {
+    // REALTIME: Post masuk terus tanpa refresh
+    _supabase.channel('public:posts')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, (payload) => {
             loadPosts();
-        })
-        .subscribe();
+        }).subscribe();
 });
 
-// FUNGSI HANTAR POST
 async function handlePostSubmit() {
     const user = document.getElementById('username').value.trim() || "Anon";
     const content = document.getElementById('content').value.trim();
@@ -29,44 +24,51 @@ async function handlePostSubmit() {
 
     localStorage.setItem('oml_user', user);
     btn.disabled = true;
+    btn.innerText = "...";
 
-    // SIMPAN KE DATABASE
-    const { error } = await _supabase
-        .from('posts')
-        .insert([{ username: user, content: content }]);
+    const { error } = await _supabase.from('posts').insert([{ username: user, content: content }]);
 
     if (error) {
-        // JIKA GAGAL, DIA AKAN BERITAHU SEBAB APA
-        alert("RALAT DATABASE: " + error.message);
-        console.error(error);
+        alert("Gagal: " + error.message);
     } else {
         document.getElementById('content').value = '';
     }
     btn.disabled = false;
+    btn.innerText = "Post";
 }
 
-// FUNGSI MUAT POST
 async function loadPosts() {
     const { data, error } = await _supabase
         .from('posts')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(50);
 
     const feed = document.getElementById('feed');
     if (error) {
-        feed.innerHTML = `<div class="text-danger">Gagal muat data: ${error.message}</div>`;
+        feed.innerHTML = "Ralat memuatkan data.";
         return;
     }
 
-    if (data) {
-        feed.innerHTML = data.map(post => `
-            <div class="card mb-3 p-3 shadow-sm" style="border-radius: 15px;">
-                <div class="d-flex justify-content-between">
-                    <span class="fw-bold text-primary">@${post.username}</span>
-                    <small class="text-muted">${new Date(post.created_at).toLocaleTimeString()}</small>
-                </div>
-                <div class="mt-2">${post.content}</div>
-            </div>
-        `).join('');
+    if (data.length === 0) {
+        feed.innerHTML = '<div class="text-center text-muted py-5">Dinding kosong. Jom tulis sesuatu!</div>';
+        return;
     }
+
+    feed.innerHTML = data.map(post => `
+        <div class="card mb-3 border-0 shadow-sm p-3 bg-white" style="border-radius: 18px;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-bold text-primary small">@${post.username}</span>
+                <span class="text-muted" style="font-size: 0.7rem;">
+                    ${new Date(post.created_at).toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' })}
+                </span>
+            </div>
+            <div class="text-dark" style="white-space: pre-wrap;">${post.content}</div>
+        </div>
+    `).join('');
+}
+
+function logout() {
+    localStorage.removeItem('oml_user');
+    location.reload();
 }
